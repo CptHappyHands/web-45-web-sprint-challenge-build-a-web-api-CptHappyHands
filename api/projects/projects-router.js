@@ -96,6 +96,19 @@ router.delete('/projects/:id', async (req, res, next) => {
     }
 })
 
+router.get("/projects/:id/actions", async (req, res, next) => {
+    try {
+        const projectPost = await Project.get(req.params.id)
+        if(!projectPost) {
+            res.status(404).json({ message: "Cannot find this user"})
+        } else {
+            const actions = await Project.getProjectActions(req.params.id)
+                res.status(200).json(actions)
+        }
+    } catch (err) {
+        next(err)
+    }
+})
 
 router.use((err, req, res, next) => {
     res.status(err.status || 500).json({
