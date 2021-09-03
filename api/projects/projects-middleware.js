@@ -17,5 +17,15 @@ async function validateProjectId(req, res, next) {
     }
 }
 
+function validateProject(req, res, next) {
+    const { name } = req.body
+    if(!name) {
+        res.status(400).json({message: "name required"})
+    } else {
+        req.name = name
+        next()
+    }
+}
 
-module.exports = { validateProjectId }
+
+module.exports = { validateProjectId, validateProject }

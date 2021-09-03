@@ -1,7 +1,10 @@
 require('dotenv').config()
 const express = require('express');
-const server = express();
+
 const projectsRouter = require("./projects/projects-router")
+
+
+const server = express();
 
 server.use(express.json())
 server.use("/api", projectsRouter)
