@@ -53,6 +53,49 @@ router.post("/projects", (req, res, next) => {
     //     })
 })
 
+router.put("/projects/:id", async (req, res, next) => {
+    const updateProject = req.body
+    if(!updateProject.description || !updateProject.name || updateProject.completed == req.completed) {
+        res.status(400).json({ message: "text input required" })
+    } else {
+        Project.get(req.params.id)
+            .then((project) => {
+                if(!project) {
+                    res.status(404).json({ message: "This ID does not exist"})
+                } else {
+                    return Project.update(req.params.id, req.body)
+                }
+            })
+            .then((data) => {
+                if (data) {
+                    return Project.get(req.params.id, req.body)
+                }
+            })
+            .then((moreData) => {
+                if (moreData) {
+                    res.json(moreData)
+                }
+            })
+            .catch((err) => {
+                next(err)
+            })
+    }
+})
+
+router.delete('/projects/:id', async (req, res, next) => {
+    try {
+        const projectPost = await Project.get(req.params.id)
+        if(!projectPost) {
+            res.status(404).json({ message: "Cannot delete because this ID does not exist"})
+        } else {
+            await Project.remove(req.params.id)
+            res.status(200).json(projectPost)
+        }
+    } catch(err) {
+        next(err)
+    }
+})
+
 
 router.use((err, req, res, next) => {
     res.status(err.status || 500).json({
