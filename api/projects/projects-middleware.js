@@ -18,11 +18,11 @@ async function validateProjectId(req, res, next) {
 }
 
 function validateProject(req, res, next) {
-    const { name } = req.body
-    if(!name) {
+    const { text } = req.body
+    if(!text.description || !text.name) {
         res.status(400).json({message: "name required"})
     } else {
-        req.name = name
+        req.text = text
         next()
     }
 }

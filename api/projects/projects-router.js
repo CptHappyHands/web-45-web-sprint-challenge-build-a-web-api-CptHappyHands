@@ -29,7 +29,7 @@ router.get("/projects/:id", validateProjectId, async (req, res, next) => {
 
 
 router.post("/projects", validateProject, (req, res, next) => {
-    Project.insert({ name: req.name })
+    Project.insert(req.body)
         .then((newProject) => {
             res.status(201).json(newProject)
         })
