@@ -2,12 +2,13 @@
 const Project = require("./projects-model")
 
 async function validateProjectId(req, res, next) {
-    try {
+    try { 
         const project = await Project.get(req.params.id);
         if (!project) {
             next({ status: 404, message: "project not found"})
         } else {
-            req.body = project
+            req.project = project
+            next()
         }
     } catch (err) {
         res.staus(500).json({
