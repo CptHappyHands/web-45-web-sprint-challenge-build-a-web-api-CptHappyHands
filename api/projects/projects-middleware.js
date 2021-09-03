@@ -5,7 +5,7 @@ async function validateProjectId(req, res, next) {
     try {
         const project = await Project.get(req.params.id);
         if (!project) {
-            return []
+            next({ status: 404, message: "project not found"})
         } else {
             req.body = project
         }
