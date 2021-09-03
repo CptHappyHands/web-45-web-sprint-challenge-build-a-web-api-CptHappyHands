@@ -28,14 +28,29 @@ router.get("/projects/:id", validateProjectId, async (req, res, next) => {
 })
 
 
-router.post("/projects", validateProject, (req, res, next) => {
-    Project.insert(req.body)
-        .then((newProject) => {
-            res.status(201).json(newProject)
-        })
-        .catch((err) => {
-            next(err)
-        })
+router.post("/projects", (req, res, next) => {
+    const newProject = req.body
+    if(!newProject.description || !newProject.name) {
+        res.status(400).json({ message: "text input required" })
+    } else {
+        Project.insert(newProject)
+            .then(({ id }) => {
+                return Project.get(id)
+            })
+            .then((project) => {
+                res.status(201).json(project)
+            })
+            .catch((err) => {
+                next(err)
+            })
+    }
+    // Project.insert(req.body)
+    //     .then((newProject) => {
+    //         res.status(201).json(newProject)
+    //     })
+    //     .catch((err) => {
+    //         next(err)
+    //     })
 })
 
 
