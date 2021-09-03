@@ -1,5 +1,7 @@
+require('dotenv').config()
 const express = require('express');
 const server = express();
+
 
 // Configure your server here
 // Build your actions router in /api/actions/actions-router.js
