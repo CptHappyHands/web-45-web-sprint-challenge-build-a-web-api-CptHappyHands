@@ -5,21 +5,29 @@ const router = express.Router()
 const { validateProjectId } = require("./projects-middleware")
 
 router.get("/projects", (req, res, next) => {
-    const projectData = Project.get(req.id)
-        if(!projectData) {
-            return []
-        } else {
-        return res.status(200).json(projectData)
-    }
+    Project.get()
+        .then((project) => {
+            if(!project) {
+                return []
+            } else {
+                res.status(200).json(project)
+            }
+        })
+        .catch((err) => {
+            next(err)
+        })
+    
 })
 
 router.get("/projects/:id", validateProjectId, async (req, res, next) => {
     try {
-        res.status(200).json(req.id)
+        res.status(200).json(req.project)
     } catch (err) {
         next(err)
     }
 })
+
+
 
 
 
